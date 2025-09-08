@@ -1,17 +1,24 @@
-import { createClient } from '@/utils/supabase/server';
 import { Suspense } from 'react';
+import { supabase } from '../utils/supabase/server';
+
+type Issues = {
+  id: number;
+  title: string;
+  description: string;
+  created_at: string;
+};
 
 const ListIssues = async () => {
-  const issues = await getServerIssues();
+  const issues: Issues[] = await getServerIssues();
 
   return (
     <div>
-      {issues?.map((issue, index) => (
+      {issues.length > 0 ? issues.map((issue, index) => (
         <div key={index}>
           <h2>{issue.title}</h2>
           <p>{issue.description}</p>
         </div>
-      ))}
+      )) : <p>No issues found</p>}
     </div>
   )
 }
@@ -20,12 +27,11 @@ const ListIssues = async () => {
 // Fetch data directly from Supabase and render it
 // No need for an API route to fetch issues
 const getServerIssues = async () => {
-  const supabase = await createClient();
   const { data, error } = await supabase.from("issues").select().order("created_at", { ascending: false });
 
   if (error) console.error("Error fetching issues:", error);
 
-  return data;
+  return data ?? [];
 };
 
 export default async function Home() {
