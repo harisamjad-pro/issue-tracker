@@ -11,3 +11,9 @@ A system to track bugs and assign to other users.
 - Install React Icons: `npm i react-icons` or `npm install react-icons`
 - Install Supabase: `npm install @supabase/supabase-js`
 - Install Supabase Server: `npm install @supabase/ssr`
+
+# Environment Variables
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
