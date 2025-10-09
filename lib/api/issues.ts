@@ -1,10 +1,9 @@
 import { Issues } from "../types/issues";
 
 const API_BASE_URL = "http://localhost:3000/api/issues";
-const NEXT_PUBLIC_API_URL = "https://issue-tracker-ha.vercel.app/api/issues"
 
 export const IssueGetAPI = async (): Promise<Issues[]> => {
-  const response = await fetch(NEXT_PUBLIC_API_URL, { method: "GET", cache: "no-store" });
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/issues`, { method: "GET", cache: "no-store" });
   if (!response.ok) throw new Error(`Failed fetching data request :( ${response.status} ${response.statusText}`);   // Handle non-2xx HTTP responses
   return response.json();
 }
