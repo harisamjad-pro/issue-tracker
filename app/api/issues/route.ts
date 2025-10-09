@@ -1,9 +1,11 @@
 
-import { createClient } from '@/lib/supabase/server';
+// import { createClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const supabase = await createClient();
+  // const supabase = await createClient();
+  const supabase = await supabaseAdmin;
   const { data, error } = await supabase.from("issues").select().order("created_at", { ascending: true });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
