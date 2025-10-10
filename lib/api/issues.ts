@@ -2,11 +2,13 @@ import { Issues } from "../types/issues";
 
 const API_BASE_URL = "http://localhost:3000/api/issues";
 
-export const IssueGetAPI = async (): Promise<Issues[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/issues`, { method: "GET", cache: "no-store" });
-  if (!response.ok) throw new Error(`Failed fetching data request :( ${response.status} ${response.statusText}`);   // Handle non-2xx HTTP responses
-  return response.json();
-}
+// export const IssueGetAPI = async (): Promise<Issues[]> => {
+//   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/issues`, { method: "GET", cache: "no-store" });
+//   if (!response.ok) throw new Error(`Failed fetching data request :( ${response.status} ${response.statusText}`);   // Handle non-2xx HTTP responses
+//   return response.json();
+// }
+
+export const IssueGetAPI = async (): Promise<Issues[]> => (await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/issues`, { method: "GET", cache: "no-store" })).json();
 
 export const IssuePostAPI = async (data: Issues) => {
   return await fetch(API_BASE_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data), });
