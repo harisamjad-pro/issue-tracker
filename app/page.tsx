@@ -3,6 +3,7 @@ import { Issues } from "@/lib/types/issues";
 import { Suspense } from "react";
 import { DeleteButton, DeleteButtonIcon, EditButtonIcon } from './components/Button';
 import Link from "next/link";
+import { TbChevronsUp } from "react-icons/tb";
 
 type FetchIssuesResult = Issues[] | { error: string };
 
@@ -24,7 +25,7 @@ const List = async () => {
           <div className="grid border border-gray-200 rounded-xl">
             <div className="px-6 py-4 flex items-center gap-4 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-black">Issues list</h2> {/* 20px Semibold Black */}
-              <span className="text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-2.5 py-0.5">100 items</span>
+              <span className="text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-2 py-1">100 items</span>
             </div>
             <div className="text-sm font-medium text-gray-500 grid grid-cols-8 gap-4 bg-gray-50 px-6 py-2">
               <div className="col-span-3"><p>Details</p></div>
@@ -37,11 +38,15 @@ const List = async () => {
               {issues.map((issue) => (
                 <div key={issue.id} className="grid grid-cols-8 items-center gap-4 px-6 py-2 group hover:bg-gray-50">
                   <div className="col-span-3">
-                    <Link href="/" className="text-base font-normal text-black hover:underline group-hover:text-blue-600">{issue.title}</Link>
+                    <Link href="/" className="text-sm font-normal text-black hover:underline hover:text-blue-600">{issue.title}</Link>
                     {/* <p className="text-sm font-normal text-gray-600">{issue.description.length > issue.description.slice(0, 60).length && issue.description.slice(0, 64) + "..."}</p> */}
                   </div>
-                  <div className="col-span-1"><p className="text-sm font-normal text-gray-600">Low</p></div>
-                  <div className="col-span-1"><span className="text-sm font-medium text-green-600 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">{issue.status}</span></div>
+                  <div className="col-span-1">
+                    <span className="flex items-center gap-0.5 text-sm font-medium text-orange-600">
+                        <TbChevronsUp className="size-4 -ms-1" />{"High"}
+                      </span>
+                  </div>
+                  <div className="col-span-1"><span className="text-xs font-medium text-green-600 bg-green-50 border border-green-200 rounded-full px-2 py-1">{issue.status}</span></div>
                   <div className="col-span-1"><p className="text-sm font-normal text-gray-600">Alex</p></div>
                   <div className="col-span-1"><p className="text-sm font-normal text-gray-600">Project Name</p></div>
                   <div className="col-span-1 flex items-center opacity-0 group-hover:opacity-100">
