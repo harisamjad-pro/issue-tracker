@@ -7,7 +7,7 @@ export interface Issues {
   id: string;
   title: string;
   description: string;
-  status: "open" | "in_progress" | "closed";
+  status: "Open" | "Progress" | "Closed";
   created_at: string;
   updated_at?: string;
   files?: IssueFile[];
