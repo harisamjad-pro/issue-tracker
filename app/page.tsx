@@ -31,13 +31,13 @@ const List = async () => {
               <span className="text-xs font-medium text-blue-800 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">{issues.length > 0 ? issues.length : 0} items</span>
             </div>
             {/* head */}
-            <div className="text-sm font-medium text-gray-600 grid grid-cols-8 gap-4 bg-gray-50 px-6 py-2">
+            <div className="text-sm font-medium text-gray-600 grid grid-cols-8 gap-6 bg-gray-50 px-6 py-2">
               {thead.map((head) => <div key={head.name} className={`col-span-${head.span}`}><p>{head.name}</p></div>)}
             </div>
             {/* body */}
             <div className="bg-transparent divide-y divide-gray-200 rounded-b-xl border-t border-gray-200 text-black font-normal">
               {issues.map((issue) => (
-                <div key={issue.id} className="grid grid-cols-8 items-center gap-4 px-6 py-2 group hover:bg-gray-50">
+                <div key={issue.id} className="grid grid-cols-8 items-center gap-6 px-6 py-2 group hover:bg-gray-50">
                   <div className="col-span-3">
                     <Link href={`/details/${issue.slug}`} className="text-sm font-medium text-blue-800 hover:underline">{issue.title}</Link>
                   </div>
@@ -64,8 +64,8 @@ const List = async () => {
                       {issue.status}
                     </div>
                   </div>
-                  <div className="col-span-1"><p className="text-sm font-normal text-black">Alex</p></div>
-                  <div className="col-span-1"><p className="text-sm font-normal text-black">{issue.projects?.title ? issue.projects?.title : "-"}</p></div>
+                  <div className="col-span-1"><p className="text-sm font-normal text-gray-600">Alex</p></div>
+                  <div className="col-span-1"><p className="text-sm font-normal text-gray-600">{issue.projects?.title ? issue.projects?.title : "-"}</p></div>
                   <div className="col-span-1 flex items-center justify-end opacity-0 group-hover:opacity-100">
                     <EditButtonIcon id={issue.id} />
                     <DeleteButtonIcon id={issue.id} />
