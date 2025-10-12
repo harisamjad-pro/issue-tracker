@@ -1,6 +1,6 @@
+import { Suspense } from "react";
 import { IssueGetAPI } from "@/lib/api/issues";
 import { Issues } from "@/lib/types/issues";
-import { Suspense } from "react";
 import { DeleteButtonIcon, EditButtonIcon } from './components/Button';
 import Link from "next/link";
 import { TbChevronsUp } from "react-icons/tb";
@@ -15,13 +15,7 @@ const fetchIssues = async (): Promise<FetchIssuesResult> => {
   }
 };
 
-const thead = [
-  { name: "Details", span: 3 },
-  { name: "Priority", span: 1 },
-  { name: "Status", span: 1 },
-  { name: "Assignee", span: 1 },
-  { name: "Project", span: 1 },
-];
+const thead = [{ name: "Details", span: 3 }, { name: "Priority", span: 1 }, { name: "Status", span: 1 }, { name: "Assignee", span: 1 }, { name: "Project", span: 1 }];
 
 const List = async () => {
   const issues = await fetchIssues();
@@ -73,7 +67,7 @@ const List = async () => {
                   <div className="col-span-1"><p className="text-sm font-normal text-black">Alex</p></div>
                   <div className="col-span-1"><p className="text-sm font-normal text-black">{issue.projects?.title ? issue.projects?.title : "-"}</p></div>
                   <div className="col-span-1 flex items-center justify-end opacity-0 group-hover:opacity-100">
-                    <EditButtonIcon />
+                    <EditButtonIcon id={issue.id} />
                     <DeleteButtonIcon id={issue.id} />
                   </div>
                 </div>

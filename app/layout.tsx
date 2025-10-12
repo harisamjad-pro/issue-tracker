@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Footer from "./components/Footer";
 
 const interFont = localFont({
   variable: "--font-inter-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${interFont.variable} font-[family-name:var(--font-inter-sans)] antialiased`}
       >
         {children}
+        <Footer />
       </body>
     </html>
   );
