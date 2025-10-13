@@ -4,6 +4,7 @@ export interface IssueFile {
 }
 
 export interface Projects {
+  id: string;
   title: string;
   description: string;
 }
@@ -19,4 +20,5 @@ export interface Issues {
   updated_at?: string;
   files?: IssueFile[];
   projects: Projects | null;
+  project_id: string | null;
 }

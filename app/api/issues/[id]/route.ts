@@ -15,9 +15,9 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
   const { id } = await context.params;
   const supabase = await createClient();
 
-  const { title, description, status, priority } = await request.json();
-  
-  const { error } = await supabase.from("issues").update({ title, description, status, priority }).eq("id", id);
+  const { title, description, status, priority, project_id } = await request.json();
+
+  const { error } = await supabase.from("issues").update({ title, description, status, priority, project_id }).eq("id", id);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ message: "Issue updated successfully" }, { status: 200 });

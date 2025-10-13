@@ -1,10 +1,11 @@
 "use client";
 
 import { IssueDeleteAPI, IssueSingleGetAPI, IssuePutAPI } from "@/lib/api/issues";
-import { Issues } from "@/lib/types/issues";
+import { ProjectGetAPI } from "@/lib/api/projects";
+import { Issues, Projects } from "@/lib/types/issues";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { TbPencil, TbTrash } from "react-icons/tb";
 
@@ -16,9 +17,7 @@ const deleteIssueConfirm = async (id: string, router: AppRouterInstance) => {
     else alert("Issue deleted successfully!");
     router.refresh();
   } catch (error) {
-    alert(
-      error instanceof Error ? error.message : "Unknown error occurred while deleting"
-    );
+    alert(error instanceof Error ? error.message : "Unknown error occurred while deleting");
   }
 };
 
@@ -37,6 +36,7 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [issue, setIssue] = useState<Issues | null>(null);
+  const [projects, setProjects] = useState<Projects[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleEditClick = async () => {
@@ -44,17 +44,27 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
     setLoading(true);
     try {
       const data = await IssueSingleGetAPI(id);
-      if (data && !("error" in data)) {
-        setIssue(data);
-      } else {
-        alert("Failed to fetch issue details");
-      }
+      if (data && !("error" in data)) setIssue(data);
+      else alert("Failed to fetch issue details");
     } catch (error) {
-      alert("Error loading issue details" + error);
+      alert("Error loading issue details: " + error);
     } finally {
       setLoading(false);
     }
   };
+
+  const fetchProjects = async () => {
+    try {
+      const data = await ProjectGetAPI();
+      if (Array.isArray(data)) setProjects(data);
+    } catch (error) {
+      alert("Error loading projects: " + error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -66,14 +76,16 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
     if (!issue) return;
 
     const formData = new FormData(e.currentTarget);
+
+    // Safe union casting for strict types
     const updatedIssue: Issues = {
       ...issue,
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       priority: formData.get("priority") as "High" | "Medium" | "Low",
       status: formData.get("status") as "Open" | "Progress" | "Closed",
+      project_id: formData.get("project") as string || null,
     };
-
 
     try {
       const res = await IssuePutAPI(updatedIssue);
@@ -89,7 +101,7 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
   const modal = open
     ? createPortal(
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white rounded-xl p-6 w-96 shadow-xl">
+        <div className="bg-white rounded-xl p-6 w-1/2">
           {loading ? (
             <p className="text-center text-gray-600">Loading...</p>
           ) : issue ? (
@@ -103,20 +115,20 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
                   name="title"
                   defaultValue={issue.title}
                   placeholder="Issue Title"
-                  className="border rounded-lg px-3 py-2 text-sm"
+                  className="text-gray-800 border-2 border-gray-200 focus:outline-none focus:border-blue-600 rounded-lg px-3 py-2 text-base placeholder:text-gray-600"
                   required
                 />
                 <textarea
                   name="description"
                   defaultValue={issue.description ?? ""}
                   placeholder="Issue Description"
-                  className="border rounded-lg px-3 py-2 text-sm resize-none"
+                  className="text-gray-800 border-2 border-gray-200 focus:outline-none focus:border-blue-600 rounded-lg px-3 py-2 text-base placeholder:text-gray-600"
                   rows={3}
                 />
                 <select
                   name="priority"
                   defaultValue={issue.priority}
-                  className="border rounded-lg px-3 py-2 text-sm"
+                  className="text-gray-800 border-2 border-gray-200 focus:outline-none focus:border-blue-600 rounded-lg px-3 py-2 text-base"
                 >
                   <option value="High">High</option>
                   <option value="Medium">Medium</option>
@@ -125,11 +137,23 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
                 <select
                   name="status"
                   defaultValue={issue.status}
-                  className="border rounded-lg px-3 py-2 text-sm"
+                  className="text-gray-800 border-2 border-gray-200 focus:outline-none focus:border-blue-600 rounded-lg px-3 py-2 text-base"
                 >
                   <option value="Open">Open</option>
                   <option value="Progress">Progress</option>
                   <option value="Closed">Closed</option>
+                </select>
+                <select
+                  name="project"
+                  defaultValue={issue.project_id ?? ""}
+                  className="text-gray-800 border-2 border-gray-200 focus:outline-none focus:border-blue-600 rounded-lg px-3 py-2 text-base"
+                >
+                  <option value="">No project</option>
+                  {projects.map((proj) => (
+                    <option key={proj.id} value={proj.id}>
+                      {proj.title}
+                    </option>
+                  ))}
                 </select>
 
                 <div className="flex justify-end gap-2 mt-2">

@@ -51,12 +51,12 @@ const List = async () => {
                     </span>
                   </div>
                   <div className="col-span-1">
-                    <div className={`flex items-center gap-1 w-fit text-xs font-medium border rounded-full px-2 py-0.5
+                    <div className={`flex items-center gap-1.5 w-fit text-xs font-medium border rounded-full px-2 py-0.5
                       ${issue.status === "Open" && "text-green-800 bg-green-50 border-green-200"}
                       ${issue.status === "Progress" && "text-yellow-800 bg-yellow-50 border-yellow-200"}
                       ${issue.status === "Closed" && "text-gray-800 bg-gray-50 border-gray-200"}
                     `}>
-                      <div className={`size-1.5 rounded-full
+                      <div className={`size-2 rounded-full
                         ${issue.status === "Open" && "bg-green-400"}
                         ${issue.status === "Progress" && "bg-yellow-400"}
                         ${issue.status === "Closed" && "bg-gray-400"}`}
@@ -64,7 +64,7 @@ const List = async () => {
                       {issue.status}
                     </div>
                   </div>
-                  <div className="col-span-1"><p className="text-sm font-normal text-gray-600">Alex</p></div>
+                  <div className="col-span-1"><p className="text-sm font-normal text-gray-600">John</p></div>
                   <div className="col-span-1"><p className="text-sm font-normal text-gray-600">{issue.projects?.title ? issue.projects?.title : "-"}</p></div>
                   <div className="col-span-1 flex items-center justify-end opacity-0 group-hover:opacity-100">
                     <EditButtonIcon id={issue.id} />
