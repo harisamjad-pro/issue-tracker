@@ -188,7 +188,7 @@ export const EditButtonIcon = ({ id }: { id: string }) => {
     <>
       <TbPencil
         onClick={handleEditClick}
-        className="text-gray-500 size-8 p-2 rounded-full cursor-pointer hover:bg-yellow-50 hover:text-yellow-800"
+        className="text-gray-500 size-8 p-2 rounded-full cursor-pointer hover:bg-blue-50 hover:text-blue-800"
       />
       {modal}
     </>

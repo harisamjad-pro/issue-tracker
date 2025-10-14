@@ -3,7 +3,7 @@ import { IssueGetAPI } from "@/lib/api/issues";
 import { Issues } from "@/lib/types/issues";
 import { DeleteButtonIcon, EditButtonIcon } from './components/Button';
 import Link from "next/link";
-import { TbChevronsUp } from "react-icons/tb";
+import { TbChevronsUp, TbPlus } from "react-icons/tb";
 
 type FetchIssuesResult = Issues[] | { error: string };
 
@@ -15,7 +15,7 @@ const fetchIssues = async (): Promise<FetchIssuesResult> => {
   }
 };
 
-const thead = [{ name: "Details", span: 3 }, { name: "Priority", span: 1 }, { name: "Status", span: 1 }, { name: "Assignee", span: 1 }, { name: "Project", span: 1 }];
+const thead = [{ name: "Details", span: 2 }, { name: "Priority", span: 1 }, { name: "Status", span: 1 }, { name: "Assignee", span: 1 }, { name: "Project", span: 1 }];
 
 const List = async () => {
   const issues = await fetchIssues();
@@ -25,20 +25,23 @@ const List = async () => {
       {!("error" in issues) ? (
         Array.isArray(issues) && issues.length > 0 ? (
           <div className="grid border border-gray-200 rounded-xl">
+            <div className="px-6 py-4 flex items-center justify-between border-b border-gray-200">
             {/* title */}
-            <div className="px-6 py-4 flex items-center gap-4 border-b border-gray-200">
+            <div className="flex items-center gap-4">
               <h2 className="text-xl font-semibold text-black">Issues list</h2>
               <span className="text-xs font-medium text-blue-800 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">{issues.length > 0 ? issues.length : 0} items</span>
             </div>
+            <button className="flex items-center gap-1 bg-blue-600 text-white text-sm font-medium px-3 py-2 border border-blue-400 rounded-lg hover:bg-blue-700 cursor-pointer group"><TbPlus className="size-4 -ms-1 text-blue-200 group-hover:text-white" />Create Issue</button>
+            </div>
             {/* head */}
-            <div className="text-sm font-medium text-gray-600 grid grid-cols-8 gap-6 bg-gray-50 px-6 py-2">
+            <div className="text-sm font-medium text-gray-600 grid grid-cols-7 gap-6 bg-gray-50 px-6 py-2">
               {thead.map((head) => <div key={head.name} className={`col-span-${head.span}`}><p>{head.name}</p></div>)}
             </div>
             {/* body */}
             <div className="bg-transparent divide-y divide-gray-200 rounded-b-xl border-t border-gray-200 text-black font-normal">
               {issues.map((issue) => (
-                <div key={issue.id} className="grid grid-cols-8 items-center gap-6 px-6 py-2 group hover:bg-gray-50">
-                  <div className="col-span-3">
+                <div key={issue.id} className="grid grid-cols-7 items-center gap-6 px-6 py-2 group hover:bg-gray-50">
+                  <div className="col-span-2">
                     <Link href={`/details/${issue.slug}`} className="text-sm font-medium text-blue-800 hover:underline">{issue.title}</Link>
                   </div>
                   <div className="col-span-1">
